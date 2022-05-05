@@ -14,6 +14,7 @@ let YoffSetLyst = [];
 
 // *** LAUNCHPAD CODE ***
 // console.log(navigator);
+let device;
 
 if (navigator.requestMIDIAccess) {
   navigator.requestMIDIAccess().then(success, failure);
@@ -33,11 +34,119 @@ function success(midiAccess) {
   const inputs = midiAccess.inputs;
   //console.log(inputs);
 
+  for (var output of midiAccess.outputs.values()) {
+    device = output;
+    console.log('Output device selected', device);
+  }
+
   inputs.forEach((input) => {
       //console.log(input);
       input.addEventListener('midimessage', handleInput);
   })
 
+  setupColor();
+}
+
+function colorKeys(key, clr) {
+  device && device.send([0x90, key, clr]);
+}
+
+function setupColor() {
+  // set 1
+  colorKeys(84, 5);
+  colorKeys(68, 5);
+  colorKeys(52, 5);
+  colorKeys(36, 5);
+  
+  // set 2
+  colorKeys(85, 9);
+  colorKeys(69, 9);
+  colorKeys(53, 9);
+  colorKeys(37, 9);
+
+  // set 3
+  colorKeys(86, 13);
+  colorKeys(70, 13);
+  colorKeys(54, 13);
+  colorKeys(38, 13);
+
+  // set 4
+  colorKeys(87, 17);
+  colorKeys(71, 17);
+  colorKeys(55, 17);
+  colorKeys(39, 17);
+
+  // set 5
+  colorKeys(88, 21);
+  colorKeys(72, 21);
+  colorKeys(56, 21);
+  colorKeys(40, 21);
+
+  // set 6
+  colorKeys(89, 25);
+  colorKeys(73, 25);
+  colorKeys(57, 25);
+  colorKeys(41, 25);
+
+  // set 7 
+  colorKeys(90, 29);
+  colorKeys(74, 29);
+  colorKeys(58, 29);
+  colorKeys(42, 29);
+  
+  // set 8
+  colorKeys(91, 33);
+  colorKeys(75, 33);
+  colorKeys(59, 33);
+  colorKeys(43, 33);
+  
+  // set 9
+  colorKeys(92, 37);
+  colorKeys(76, 37);
+  colorKeys(60, 37);
+  colorKeys(44, 37);
+
+  // set 10
+  colorKeys(93, 41);
+  colorKeys(77, 41);
+  colorKeys(61, 41);
+  colorKeys(45, 41);
+
+  // set 11
+  colorKeys(94, 45);
+  colorKeys(78, 45);
+  colorKeys(62, 45);
+  colorKeys(46, 45);
+
+  // set 12
+  colorKeys(95, 47);
+  colorKeys(79, 47);
+  colorKeys(63, 47);
+  colorKeys(47, 47);
+
+  // set 13
+  colorKeys(96, 49);
+  colorKeys(80, 49);
+  colorKeys(64, 49);
+  colorKeys(48, 49);
+
+  // set 14
+  colorKeys(97, 53);
+  colorKeys(81, 53);
+  colorKeys(65, 53);
+  colorKeys(49, 53);
+
+  // set 15
+  colorKeys(98, 57);
+  colorKeys(82, 57);
+  colorKeys(66, 57);
+  colorKeys(50, 57);
+
+  // set 16
+  colorKeys(99, 95);
+  colorKeys(83, 95);
+  colorKeys(67, 95);
+  colorKeys(51, 95);
 }
 
 function handleInput(input) {
@@ -169,6 +278,7 @@ function noteOn(note) {
 
 // *** P5 CODE ***
 function preload() {
+  setupColor();
   fetch(fetchURL, {
     headers: {
       Authorization: apikey
