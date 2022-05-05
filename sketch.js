@@ -1,9 +1,16 @@
-let img = "";
+// let img = "";
 let cnv;
 const apikey = "563492ad6f917000010000014e46cda0204346158c800d5f018c30e2";
 var imgURL;
 let searchWord = prompt("Please enter search word: ");
 let fetchURL = `https://api.pexels.com/v1/search?query=${searchWord}`;
+
+// *** Lists ***
+let urlLyst = [];
+let imgLyst = [];
+let XoffSetLyst = [];
+let YoffSetLyst = [];
+
 
 // *** LAUNCHPAD CODE ***
 // console.log(navigator);
@@ -46,55 +53,117 @@ function handleInput(input) {
 
 function noteOn(note) {
   console.log(`note:${note} // on`);
+  let hueValue = -1;
+  let imgIndex = -1;
   switch(note) {
     case 84:
-      show_color(1);
+    case 68:
+    case 52:
+    case 36:
+      hueValue = 1;
       break;
     case 85:
-      show_color(2);
+    case 69:
+    case 53:
+    case 37:
+      hueValue = 2;
       break;
     case 86:
-      show_color(3);
+    case 70:
+    case 54:
+    case 38:
+      hueValue = 3;
       break;
     case 87:
-      show_color(4);
+    case 71:
+    case 55:
+    case 39:
+      hueValue = 4;
       break;
     case 88:
-      show_color(5);
+    case 72:
+    case 56:
+    case 40:
+      hueValue = 5;
       break;
     case 89:
-      show_color(6);
+    case 73:
+    case 57:
+    case 41:
+      hueValue = 6;
       break;
     case 90:
-      show_color(7);
+    case 74:
+    case 58:
+    case 42:
+      hueValue = 7;
       break;
     case 91:
-      show_color(8);
+    case 75:
+    case 59:
+    case 43:
+      hueValue = 8;
       break;
     case 92:
-      show_color(9);
+    case 76:
+    case 60:
+    case 44:
+      hueValue = 9;
       break;
     case 93:
-      show_color(10);
+    case 77:
+    case 61:
+    case 45:
+      hueValue = 10;
       break;
     case 94:
-      show_color(11);
+    case 78:
+    case 62:
+    case 46:
+      hueValue = 11;
       break;
     case 95:
-      show_color(12);
+    case 79:
+    case 63:
+    case 47:
+      hueValue = 12;
       break;
     case 96:
-      show_color(13);
+    case 80:
+    case 64:
+    case 48:
+      hueValue = 13;
       break;
     case 97:
-      show_color(14);
+    case 81:
+    case 65:
+    case 49:
+      hueValue = 14;
       break;
     case 98:
-      show_color(15);
+    case 82:
+    case 66:
+    case 50:
+      hueValue = 15;
       break;
     case 99:
-      show_color(16);
+    case 83:
+    case 67:
+    case 51:
+      hueValue = 16;
       break;
+  }
+  if (note >= 36 && note <= 51) {
+    show_color(0, hueValue);
+  }
+  if (note >= 52 && note <= 67) {
+    show_color(1, hueValue);
+  }
+  if (note >= 68 && note <= 83) {
+    show_color(2, hueValue);
+  }
+  if (note >= 84 && note <= 99) {
+    show_color(3, hueValue);
   }
 }
 
@@ -111,10 +180,22 @@ function preload() {
     .then(data => {
       // console.log(data.photos);
       // console.log(data.photos[0].src.large);
-      imgURL = data.photos[0].src.large;
-      console.log(`imgURL: ${imgURL}`);
-      img = loadImage(imgURL);
-      return img;
+      // imgURL = data.photos[0].src.large;
+      urlLyst[0] = data.photos[0].src.large;
+      urlLyst[1] = data.photos[1].src.large;
+      urlLyst[2] = data.photos[2].src.large;
+      urlLyst[3] = data.photos[3].src.large;
+      // console.log(`imgURL: ${imgURL}`);
+      console.log(`urlLyst[0] = ${urlLyst[0]}`);
+      console.log(`urlLyst[1] = ${urlLyst[1]}`);
+      console.log(`urlLyst[2] = ${urlLyst[2]}`);
+      console.log(`urlLyst[3] = ${urlLyst[3]}`);
+      // img = loadImage(imgURL);
+      imgLyst[0] = loadImage(urlLyst[0]);
+      imgLyst[1] = loadImage(urlLyst[1]);
+      imgLyst[2] = loadImage(urlLyst[2]);
+      imgLyst[3] = loadImage(urlLyst[3]);
+      return imgLyst;
     })
 
   // TEST IMAGE
@@ -126,13 +207,9 @@ function setup() {
   background(25);
   // console.log(`window - w: ${windowWidth} - h: ${windowHeight}`);
   // console.log(`image - w ${img.width} - h ${img.height}`);
-  let newCanvasX = (windowWidth - img.width)/2;
-  let newCanvasY = (windowHeight - img.height)/2;
+  // let newCanvasX = (windowWidth - imgLyst[0].width)/2;
+  // let newCanvasY = (windowHeight - imgLyst[0].height)/2;
   // console.log('Canvas Created');
-}
-
-function draw() {
-
 }
 
 
@@ -167,26 +244,28 @@ function getHue(r, g, b) {
   return h
 }
 
-function show_color(hue_range) {
+function show_color(imgIndex, hue_range) {
   // Idea: Determine size based off duration of user's press?
   let s = 10;
-  let xCenterOffSet = (windowWidth/2)   - (img.width/2);
-  let yCenterOffSet = (windowHeight/2)  - (img.height/2);
+  // let xCenterOffSet = (windowWidth/2)   - (img.width/2);
+  // let yCenterOffSet = (windowHeight/2)  - (img.height/2);
+  XoffSetLyst[imgIndex] = (windowWidth/2)  - (imgLyst[imgIndex].width/2);
+  YoffSetLyst[imgIndex] = (windowHeight/2) - (imgLyst[imgIndex].height/2);
   // console.log(`xCenterOffSet = ${xCenterOffSet}`);
   // console.log(`yCenterOffSet = ${yCenterOffSet}`)
-  for(let col = 0; col < img.width; col += s) {
-    for (let row = 0; row < img.height; row += s) {
+  for(let col = 0; col < imgLyst[imgIndex].width; col += s) {
+    for (let row = 0; row < imgLyst[imgIndex].height; row += s) {
       let xPos = col;
       let yPos = row;
-      let c = img.get(xPos, yPos);
+      let c = imgLyst[imgIndex].get(xPos, yPos);
       
       let h = getHue(c[0], c[1], c[2]);
       
       let min_hue = 22.5 * (hue_range - 1);
       let max_hue = 22.5 * hue_range;
 
-      xPos += xCenterOffSet;
-      yPos += yCenterOffSet;
+      xPos += XoffSetLyst[imgIndex];
+      yPos += YoffSetLyst[imgIndex];
       
       if (h >= min_hue && h <= max_hue) {
         draw_point(xPos, yPos, c, 2 * s);
