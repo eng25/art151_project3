@@ -162,7 +162,7 @@ function handleInput(input) {
 }
 
 function noteOn(note) {
-  console.log(`note:${note} // on`);
+  // console.log(`note:${note} // on`);
   let hueValue = -1;
   let imgIndex = -1;
   switch(note) {
