@@ -163,7 +163,7 @@ function getHue(r, g, b) {
   if (r === g && r === b) {
     return r;
   }
-  console.log(`r: ${r}, g: ${g}, b: ${b}`);
+  // console.log(`r: ${r}, g: ${g}, b: ${b}`);
   return h
 }
 
