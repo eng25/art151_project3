@@ -1,7 +1,9 @@
-let img;
+let img = "";
 let cnv;
 const apikey = "563492ad6f917000010000014e46cda0204346158c800d5f018c30e2";
 var imgURL;
+let searchWord = prompt("Please enter search word: ");
+let fetchURL = `https://api.pexels.com/v1/search?query=${searchWord}`;
 
 // *** LAUNCHPAD CODE ***
 // console.log(navigator);
@@ -37,7 +39,7 @@ function handleInput(input) {
   const velocity  = input.data[2];
 
   if (velocity > 0) {
-    console.log(`command: ${command}, note: ${note}, velocity: ${velocity}`);
+    // console.log(`command: ${command}, note: ${note}, velocity: ${velocity}`);
     noteOn(note);
   }
 }
@@ -96,14 +98,9 @@ function noteOn(note) {
   }
 }
 
-function noteOff(note) {
-  console.log(`note:${note} // off`);
-
-}
-
 // *** P5 CODE ***
-function getImgURL() {
-  fetch("https://api.pexels.com/v1/search?query=people", {
+function preload() {
+  fetch(fetchURL, {
     headers: {
       Authorization: apikey
     }
@@ -112,16 +109,16 @@ function getImgURL() {
       return resp.json()
     })
     .then(data => {
-      console.log(data.photos);
-      console.log(data.photos[0].src.small);
+      // console.log(data.photos);
+      // console.log(data.photos[0].src.large);
+      imgURL = data.photos[0].src.large;
+      console.log(`imgURL: ${imgURL}`);
+      img = loadImage(imgURL);
+      return img;
     })
-}
 
-function preload() {
-  console.log(`imgURL print 1: ${imgURL}`);
-  // img = loadImage(imgURL);
   // TEST IMAGE
-  img = loadImage('https://media.istockphoto.com/photos/abstract-exhibition-background-with-ultraviolet-neon-lights-glowing-picture-id1298834196?b=1&k=20&m=1298834196&s=170667a&w=0&h=YHZkqjKMZishTRcAcqkn9FQGKc_DFs7HP0cRi3yJBz4=');
+  // img = loadImage('https://media.istockphoto.com/photos/abstract-exhibition-background-with-ultraviolet-neon-lights-glowing-picture-id1298834196?b=1&k=20&m=1298834196&s=170667a&w=0&h=YHZkqjKMZishTRcAcqkn9FQGKc_DFs7HP0cRi3yJBz4=');
 }
 
 function setup() {
@@ -135,7 +132,7 @@ function setup() {
 }
 
 function draw() {
-  
+
 }
 
 
@@ -153,7 +150,7 @@ function getHue(r, g, b) {
   let mx = max(r, g, b);
   let mn = min(r, g, b);
   let df = mx - mn;
-  var h = 0;
+  var h = -1;
   if (mx == r) {
     h = (60 * ((g-b)/df) + 360) % 360;
   }
@@ -163,9 +160,10 @@ function getHue(r, g, b) {
   if (mx == b) {
     h = (60 * ((r-g)/df) + 240) % 360;
   }
-  if (h > 360 || h < 0) {
-    console.log(h);
+  if (r === g && r === b) {
+    return r;
   }
+  console.log(`r: ${r}, g: ${g}, b: ${b}`);
   return h
 }
 
@@ -190,7 +188,7 @@ function show_color(hue_range) {
       xPos += xCenterOffSet;
       yPos += yCenterOffSet;
       
-      if (h > min_hue && h < max_hue) {
+      if (h >= min_hue && h <= max_hue) {
         draw_point(xPos, yPos, c, 2 * s);
       }
       // Default: Draw all points
